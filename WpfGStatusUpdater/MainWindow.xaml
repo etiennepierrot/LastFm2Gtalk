@@ -1,0 +1,17 @@
+﻿<Window x:Class="WpfGStatusUpdater.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Last.fm To Gtalk" Height="350" Width="672">
+    <Grid Margin="31,10,15,174">
+        <TextBox Name="LoginGoogle"  HorizontalAlignment="Left" Height="23" Margin="433,18,0,0" TextWrapping="Wrap" Text="etienne.pierrot@gmail.com" VerticalAlignment="Top" Width="175"/>
+        <PasswordBox Name="PasswordGoogle"  HorizontalAlignment="Left" Margin="433,46,0,0" VerticalAlignment="Top" Width="175"/>
+        <TextBox  Name="LastfmUser"  HorizontalAlignment="Left" Height="23" Margin="105,22,0,0" TextWrapping="Wrap" Text="Etienne_Fab4" VerticalAlignment="Top" Width="120" TextChanged="LastfmUser_TextChanged"/>
+        <Button Content="Start" HorizontalAlignment="Left" Margin="88,97,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+        <Button Content="Stop" HorizontalAlignment="Left" Margin="8,97,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_2"/>
+        <Label Content="account last.fm" HorizontalAlignment="Left" Margin="10,18,0,0" VerticalAlignment="Top"/>
+        <Label Content="Email" HorizontalAlignment="Left" Margin="378,18,0,0" VerticalAlignment="Top" Width="55"/>
+        <Label Content="Password" HorizontalAlignment="Left" Margin="361,44,0,0" VerticalAlignment="Top" Width="67"/>
+        <Button Content="Register account" HorizontalAlignment="Left" Margin="493,97,0,0" VerticalAlignment="Top" Width="115" RenderTransformOrigin="-0.32,0.35" Click="Button_Click_3"/>
+
+    </Grid>
+</Window>
