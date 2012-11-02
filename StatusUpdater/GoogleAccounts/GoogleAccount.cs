@@ -64,12 +64,8 @@ namespace StatusUpdater.GoogleAccounts
 
             Waiting();
 
-            if (!_xmppClientConnection.Authenticated)
-            {
-                IsAccountValid = false;
-            }
             IsConnected = true;
-            IsAccountValid = true;
+            IsAccountValid = _xmppClientConnection.Authenticated;
         }
 
         private void Waiting()
