@@ -6,43 +6,38 @@ namespace StatusUpdater.GoogleAccounts
 {
     public class GoogleAccountService
     {
-        private readonly RavenRepository<GoogleAccount> _ravenRepositoryGoogleAccount;
-
-        public GoogleAccountService(RavenRepository<GoogleAccount> ravenRepositoryGoogleAccount)
-        {
-            _ravenRepositoryGoogleAccount = ravenRepositoryGoogleAccount;
-        }
-
         public IEnumerable<GoogleAccount> GetValidAccount()
         {
-            return
-                _ravenRepositoryGoogleAccount.QueryAll().Where(x => x.IsAccountValid.HasValue && x.IsAccountValid.Value)
-                    .ToArray();
+            using (var session = RavenRepository.GetInstance)
+            {
+                var googleAccounts = session.Query<GoogleAccount>().Where(x =>  x.IsAccountValid);
+                var validAccount = googleAccounts.ToArray();
+                return validAccount;
+            }
+            
         }
 
-        public GoogleAccount Get(string id)
-        {
-            return _ravenRepositoryGoogleAccount.Get(id);
-        }
 
         public string RegisterAccount(string login, string password)
         {
-            var entity = new GoogleAccount(login, password);
-            _ravenRepositoryGoogleAccount.Save(entity);
-            return entity.Id;
-        }
-
-        public void DeleteAllAcount()
-        {
-            _ravenRepositoryGoogleAccount.Delete();
+            using (var session = RavenRepository.GetInstance)
+            {
+                var entity = new GoogleAccount(login, password);
+                session.Store(entity);
+                session.SaveChanges();
+                return entity.Id;
+            }
         }
 
         public void CloseConnection()
         {
-            var accounts = _ravenRepositoryGoogleAccount.QueryAll().Where(x => x.IsConnected);
-            foreach (var googleAccount in accounts)
+            using (var session = RavenRepository.GetInstance)
             {
-                googleAccount.CloseConnection();
+                var accounts = session.Query<GoogleAccount>().Where(x => x.IsConnected);
+                foreach (var googleAccount in accounts)
+                {
+                    googleAccount.CloseConnection();
+                }
             }
         }
     }

@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using StatusUpdater;
 using StatusUpdater.GoogleAccounts;
+using StatusUpdater.LastFM;
 using StructureMap;
 using log4net;
 
@@ -37,7 +38,7 @@ namespace WpfGStatusUpdater
             _facade = ObjectFactory.GetInstance<Facade>();
             InitializeComponent();
             logger.LogInfoMessage("Application Lauch");
-            dgGoogleAccount.ItemsSource = _facade.GetGoogleAccountToUpdate().Select(x => new GoogleAccountDto {Email = x.Email});
+            dgGoogleAccount.ItemsSource = _facade.GetGoogleAccountToUpdate().Select(x => new GoogleAccountDto { Email = x.Email });
         }
 
         /// <summary>
@@ -47,7 +48,6 @@ namespace WpfGStatusUpdater
         /// <param name="e"></param>
         private void ButtonClick1(object sender, RoutedEventArgs e)
         {
-            Logger.Info("test");
             _worker = new BackgroundWorker();
 
             _worker.DoWork += ExpansiveMethod;
@@ -57,16 +57,17 @@ namespace WpfGStatusUpdater
 
             var parameterForAsyncMethod = new ParameterForAsyncMethod
                                               {
-                                                                      BackgroundWorker = _worker,
-                                                                      UserLastFm = LastfmUser.Text
-                                                                  };
+                                                  BackgroundWorker = _worker,
+                                                  UserLastFm = LastfmUser.Text
+                                              };
 
             _worker.RunWorkerAsync(parameterForAsyncMethod);
         }
 
         void WorkerProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            var track = _facade.GetCurrentTrack();
+
+            Track track = _facade.GetCurrentTrack();
             if (track == null) return;
             CurrentArtist.Content = track.Artist;
             CurrentSong.Content = track.Song;
@@ -74,7 +75,7 @@ namespace WpfGStatusUpdater
             {
                 Cover.Source = GetImageFromUrl(track.UrlCover);
             }
-            
+
         }
 
         private static BitmapImage GetImageFromUrl(string url)
@@ -83,7 +84,7 @@ namespace WpfGStatusUpdater
             const int bytesToRead = 100;
             var request =
                 WebRequest.Create(
-                    new Uri(url,UriKind.Absolute));
+                    new Uri(url, UriKind.Absolute));
             request.Timeout = -1;
             var response = request.GetResponse();
             var responseStream = response.GetResponseStream();
@@ -119,10 +120,10 @@ namespace WpfGStatusUpdater
         private void ExpansiveMethod(object sender, DoWorkEventArgs e)
         {
             var arg = e.Argument as ParameterForAsyncMethod;
-            Debug.Assert(arg !=null);
+            Debug.Assert(arg != null);
             var accounts = _facade.GetGoogleAccountToUpdate().ToArray();
 
-            while(true)
+            while (true)
             {
 
                 if (arg.BackgroundWorker.CancellationPending)
@@ -131,11 +132,10 @@ namespace WpfGStatusUpdater
                     break;
                 }
 
-                if(_facade.Update(arg.UserLastFm, accounts))
+                if (_facade.Update(arg.UserLastFm, accounts))
                 {
                     _worker.ReportProgress(0);
                 }
-
                 Thread.Sleep(10000);
             }
         }
@@ -147,7 +147,7 @@ namespace WpfGStatusUpdater
         /// <param name="e"></param>
         private void ButtonClick2(object sender, RoutedEventArgs e)
         {
-            if(_worker != null && _worker.IsBusy)
+            if (_worker != null && _worker.IsBusy)
             {
                 _worker.CancelAsync();
             }
@@ -165,8 +165,8 @@ namespace WpfGStatusUpdater
         /// <param name="e"></param>
         private void ButtonClick3(object sender, RoutedEventArgs e)
         {
-             _facade.RegisterAccount(LoginGoogle.Text, PasswordGoogle.Password);
-            dgGoogleAccount.ItemsSource = _facade.GetGoogleAccountToUpdate().Select(x => new GoogleAccountDto{Email =  x.Email});
+            _facade.RegisterAccount(LoginGoogle.Text, PasswordGoogle.Password);
+            dgGoogleAccount.ItemsSource = _facade.GetGoogleAccountToUpdate().Select(x => new GoogleAccountDto { Email = x.Email });
         }
 
     }

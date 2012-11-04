@@ -28,7 +28,7 @@ namespace StatusUpdater
         public void UpdateStatusOnGoogleAccount(IEnumerable<GoogleAccount> googleAccounts, string status)
         {
             
-            foreach (var xmppClient in googleAccounts.Where(x => x.IsAccountValid.HasValue && x.IsAccountValid.Value))
+            foreach (var xmppClient in googleAccounts.Where(x => x.IsAccountValid))
             {
                 xmppClient.SetStatus(status);
             }
