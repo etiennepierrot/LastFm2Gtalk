@@ -11,11 +11,11 @@ namespace StatusUpdater.LastFM
             _lastFmContentParserService = lastFmContentParserService;
         }
 
-        public virtual Track GetCurrentTrack(string user)
+        public virtual Track GetCurrentTrackOnAir(string user)
         {
             var client = new RestClient("http://ws.audioscrobbler.com");
             string pathRequest =
-                string.Format("/2.0/?method=user.getrecenttracks&user={0}&api_key=49a0288b68ec3f08f94a216cdf5cf4f0",
+                string.Format("/2.0/?method=user.getrecenttracks&user={0}&api_key=49a0288b68ec3f08f94a216cdf5cf4f0&limit=1",
                               user);
             var request = new RestRequest(pathRequest);
             var response = client.Execute(request);

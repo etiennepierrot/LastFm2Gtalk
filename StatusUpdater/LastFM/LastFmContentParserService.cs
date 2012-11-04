@@ -29,32 +29,25 @@ namespace StatusUpdater.LastFM
 
             if(nodeTrack != null)
             {
-                var selectSingleNode = nodeTrack.SelectSingleNode("//artist");
-                string artist;
-                if (selectSingleNode != null)
-                {
-                    artist = selectSingleNode.InnerText;
-                }
-                else
-                {
-                    throw new BadFormatResponseLastFmException("no artist node in track");
-                }
-
-                var nodeSong = nodeTrack.SelectSingleNode("//name");
-                string song;
-                if (nodeSong != null) song = nodeSong.InnerText;
-                else
-                {
-                    throw new BadFormatResponseLastFmException("no song node in track");
-                }
-
+                var selectSingleNode = nodeTrack.SelectSingleNode("//image[@size='extralarge']");
                 return new Track
                            {
-                               Artist = artist,
-                               Song = song
+                               Artist = GetData(nodeTrack, "artist"),
+                               Song = GetData(nodeTrack, "name"),
+                               UrlCover = selectSingleNode != null ? selectSingleNode.InnerText : string.Empty
                            };
             }
             return null;
+        }
+
+        private string GetData(XmlNode node, string field)
+        {
+            var selectSingleNode = node.SelectSingleNode(string.Format("//{0}", field));
+            if (selectSingleNode != null)
+            {
+                return selectSingleNode.InnerText;
+            }
+            throw new BadFormatResponseLastFmException(string.Format("no {0} node in track", field));
         }
 
         public virtual XmlNode GetNodeCurrentTrack(string response)

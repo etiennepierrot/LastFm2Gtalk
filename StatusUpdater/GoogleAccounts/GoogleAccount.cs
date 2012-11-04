@@ -2,9 +2,16 @@ using System;
 using System.Threading;
 using StatusUpdater.RavenRepositories;
 using agsXMPP;
+using agsXMPP.Xml.Dom;
+using agsXMPP.protocol.client;
 
 namespace StatusUpdater.GoogleAccounts
 {
+    public class GoogleAccountDto
+    {
+        public string Email { get; set; }
+    }
+
     public class GoogleAccount:IEntity
     {
         public string Email { get { return string.Format("{0}@{1}", Login, Domain); } }
@@ -17,6 +24,8 @@ namespace StatusUpdater.GoogleAccounts
         private XmppClientConnection _xmppClientConnection;
         private bool Wait { get; set; }
 
+        readonly ILogger _logger = new Logger(typeof(GoogleAccount));
+
         public string Id { get; set; }
 
         public GoogleAccount(string email, string password)
@@ -26,7 +35,11 @@ namespace StatusUpdater.GoogleAccounts
             Domain = strings[1];
             Password = password;
             Connect();
+        }
 
+        public void CloseConnection()
+        {
+            _xmppClientConnection.Close();
         }
 
         public void SetStatus(string status)
@@ -35,7 +48,6 @@ namespace StatusUpdater.GoogleAccounts
             {
                 Connect();
             }
-
             var iqMessage = string.Format(@"<iq type='set' to='{0}' id='ss-2'>
   <query xmlns='google:shared-status' version='2'>
     <status>{1}</status>
@@ -44,8 +56,58 @@ namespace StatusUpdater.GoogleAccounts
   </query>
 </iq>", Email, status);
 
-            _xmppClientConnection.Send(iqMessage);
+
+            try
+            {
+                _xmppClientConnection.Send(iqMessage);
+            }
+            catch (Exception e)
+            {
+                _logger.LogException(e);
+            }
         }
+
+        #region EVENT
+        private void _xmppClientConnection_OnError(object sender, Exception ex)
+        {
+            _logger.LogException(ex);
+        }
+
+        private void _xmppClientConnection_OnStreamError(object sender, Element e)
+        {
+            _logger.LogInfoMessage(e.InnerXml);
+        }
+
+        private void _xmppClientConnection_OnRegisterError(object sender, Element e)
+        {
+            _logger.LogInfoMessage(e.InnerXml);
+        }
+
+        private void _xmppClientConnection_OnReadXml(object sender, string xml)
+        {
+            _logger.LogInfoMessage(xml);
+        }
+
+        void _xmppClientConnection_OnSocketError(object sender, Exception ex)
+        {
+            _logger.LogException(ex);
+        }
+
+        private void _xmppClientConnection_OnMessage(object sender, Message msg)
+        {
+            _logger.LogInfoMessage(msg.Body);
+        }
+
+        void _xmppClientConnection_OnClose(object sender)
+        {
+            _logger.LogInfoMessage("Connection closed");
+        }
+
+        private void XmppOnLogin(object sender)
+        {
+            Wait = false;
+        }
+        #endregion
 
         private void Connect()
         {
@@ -54,11 +116,12 @@ namespace StatusUpdater.GoogleAccounts
                 Server = Domain,
                 ConnectServer = "talk.google.com",
                 Username = Login,
-                Password = Password
+                Password = Password,
+                KeepAlive = true,
+                KeepAliveInterval = 120
             };
 
-
-            _xmppClientConnection.OnLogin += XmppOnLogin;
+            InitEvent();
 
             _xmppClientConnection.Open();
 
@@ -66,6 +129,18 @@ namespace StatusUpdater.GoogleAccounts
 
             IsConnected = true;
             IsAccountValid = _xmppClientConnection.Authenticated;
+        }
+
+        private void InitEvent()
+        {
+            _xmppClientConnection.OnReadXml += _xmppClientConnection_OnReadXml;
+            _xmppClientConnection.OnClose += _xmppClientConnection_OnClose;
+            _xmppClientConnection.OnMessage += _xmppClientConnection_OnMessage;
+            _xmppClientConnection.OnSocketError += _xmppClientConnection_OnSocketError;
+            _xmppClientConnection.OnRegisterError += _xmppClientConnection_OnRegisterError;
+            _xmppClientConnection.OnStreamError += _xmppClientConnection_OnStreamError;
+            _xmppClientConnection.OnError += _xmppClientConnection_OnError;
+            _xmppClientConnection.OnLogin += XmppOnLogin;
         }
 
         private void Waiting()
@@ -83,9 +158,6 @@ namespace StatusUpdater.GoogleAccounts
             } while (Wait);
         }
 
-        private void XmppOnLogin(object sender)
-        {
-            Wait = false;
-        }
+
     }
 }
