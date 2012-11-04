@@ -19,7 +19,7 @@ namespace StatusUpdater.GoogleAccounts
         public string Domain { get; private set; }
         public string Password { get; private set; }
         public bool IsConnected { get; private set; }
-        public bool? IsAccountValid { get; private set; }
+        public bool IsAccountValid { get; private set; }
 
         private XmppClientConnection _xmppClientConnection;
         private bool Wait { get; set; }

@@ -13,5 +13,7 @@ namespace TestStatusUpdater
             var client = new GoogleAccount("etienne.pierrot@gmail.com", "splhcb67");
             client.SetStatus("stauts de dqsdsq");
         }
+
+
     }
 }
