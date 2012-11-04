@@ -1,8 +1,5 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StatusUpdater;
-using StatusUpdater.Exceptions;
-using StatusUpdater.GoogleAccounts;
 using StatusUpdater.LastFM;
 using StructureMap;
 
@@ -17,7 +14,7 @@ namespace TestStatusUpdater
         public void ParseResponse()
         {
 #region hide
-            string response = @"<?xml version=""1.0"" encoding=""utf-8""?>
+            const string response = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <lfm status=""ok"">
 <recenttracks user=""Etienne_Fab4"" page=""1"" perPage=""10"" totalPages=""6318"" total=""63176"" >
 <track nowplaying=""true""> 
@@ -174,7 +171,7 @@ namespace TestStatusUpdater
         public void ParseCurrentTrack()
         {
             #region response XML
-            string response = @"<?xml version=""1.0"" encoding=""utf-8""?>
+            const string response = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <lfm status=""ok"">
 <recenttracks user=""Etienne_Fab4"" page=""1"" perPage=""10"" totalPages=""6318"" total=""63176"" >
 <track nowplaying=""true""> 

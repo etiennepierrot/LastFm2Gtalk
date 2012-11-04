@@ -42,6 +42,9 @@
     <Reference Include="ICSharpCode.NRefactory">
       <HintPath>..\packages\RavenDB.Database.1.0.960\lib\net40\ICSharpCode.NRefactory.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Lucene.Net">
       <HintPath>..\packages\RavenDB.Database.1.0.960\lib\net40\Lucene.Net.dll</HintPath>
     </Reference>
@@ -106,12 +109,14 @@
     <Compile Include="Exceptions\BadFormatResponseLastFmException.cs" />
     <Compile Include="Exceptions\ErrorLastFmException.cs" />
     <Compile Include="Exceptions\NoTrackPlayedException.cs" />
-    <Compile Include="GoogleAccounts\Facade.cs" />
+    <Compile Include="Facade.cs" />
     <Compile Include="GoogleAccounts\GoogleAccount.cs" />
     <Compile Include="GoogleAccounts\GoogleAccountService.cs" />
     <Compile Include="LastFM\LastFmClient.cs" />
     <Compile Include="LastFM\LastFmContentParserService.cs" />
     <Compile Include="LastFM\Track.cs" />
+    <Compile Include="LastFM\TrackService.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RavenRepositories\IEntity.cs" />
     <Compile Include="RavenRepositories\RavenRepository.cs" />
@@ -122,6 +127,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Raven.Studio.xap" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

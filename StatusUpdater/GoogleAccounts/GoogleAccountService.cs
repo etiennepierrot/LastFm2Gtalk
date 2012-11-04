@@ -28,8 +28,22 @@ namespace StatusUpdater.GoogleAccounts
         public string RegisterAccount(string login, string password)
         {
             var entity = new GoogleAccount(login, password);
-             entity =_ravenRepositoryGoogleAccount.Save(entity);
+            _ravenRepositoryGoogleAccount.Save(entity);
             return entity.Id;
+        }
+
+        public void DeleteAllAcount()
+        {
+            _ravenRepositoryGoogleAccount.Delete();
+        }
+
+        public void CloseConnection()
+        {
+            var accounts = _ravenRepositoryGoogleAccount.QueryAll().Where(x => x.IsConnected);
+            foreach (var googleAccount in accounts)
+            {
+                googleAccount.CloseConnection();
+            }
         }
     }
 }
