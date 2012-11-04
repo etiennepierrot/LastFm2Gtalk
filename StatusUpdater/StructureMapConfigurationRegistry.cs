@@ -1,6 +1,5 @@
 ﻿using Raven.Client;
 using Raven.Client.Embedded;
-using StatusUpdater.LastFM;
 using StructureMap;
 using StructureMap.Configuration.DSL;
 

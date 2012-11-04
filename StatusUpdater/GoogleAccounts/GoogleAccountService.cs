@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using StatusUpdater.RavenRepositories;
+using StatusUpdater.Tools;
 
 namespace StatusUpdater.GoogleAccounts
 {
@@ -17,6 +18,17 @@ namespace StatusUpdater.GoogleAccounts
             
         }
 
+        public void MigratePassword()
+        {
+            using(var session = RavenRepository.GetInstance)
+            {
+                var accounts = session.Query<GoogleAccount>();
+                foreach (var googleAccount in accounts)
+                {
+                    googleAccount.Password = Crypto.Encrypt(googleAccount.Password, Crypto.Password);
+                }
+            }
+        }
 
         public string RegisterAccount(string login, string password)
         {
