@@ -17,7 +17,7 @@ namespace StatusUpdater.GoogleAccounts
         public string Email { get { return string.Format("{0}@{1}", Login, Domain); } }
         public string Login { get; private set; }
         public string Domain { get; private set; }
-        public string Password { get; private set; }
+        public string Password { get;  set; }
         public bool IsConnected { get; private set; }
         public bool IsAccountValid { get; private set; }
 
@@ -145,7 +145,6 @@ namespace StatusUpdater.GoogleAccounts
 
         private void Waiting()
         {
-            Console.Write("Wait for Login ");
             Wait = true;
             int i = 0;
             do

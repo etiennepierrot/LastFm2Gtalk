@@ -122,6 +122,7 @@
     <Compile Include="RavenRepositories\IEntity.cs" />
     <Compile Include="RavenRepositories\RavenRepository.cs" />
     <Compile Include="StructureMapConfigurationRegistry.cs" />
+    <Compile Include="Tools\Crypto.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
