@@ -93,7 +93,7 @@ DocProject/Help/*.hhp
 DocProject/Help/Html2
 DocProject/Help/html
 
-StatusUpdater/Tools/Crypto.cs
+Crypto.cs
 
 # Click-Once directory
 publish
