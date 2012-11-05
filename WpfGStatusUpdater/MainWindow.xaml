@@ -13,15 +13,16 @@
         <Label Content="Email" HorizontalAlignment="Left" Margin="378,18,0,0" VerticalAlignment="Top" Width="55"/>
         <Label Content="Password" HorizontalAlignment="Left" Margin="361,44,0,0" VerticalAlignment="Top" Width="67"/>
         <Button Content="Register account" HorizontalAlignment="Left" Margin="493,97,0,0" VerticalAlignment="Top" Width="115" RenderTransformOrigin="-0.32,0.35" Click="ButtonClick3"/>
-        <Label Content="No Artist" x:Name="CurrentArtist" HorizontalAlignment="Left" Height="33" Margin="105,132,0,0" VerticalAlignment="Top" Width="293"/>
-        <Label Content="No Song" x:Name="CurrentSong" HorizontalAlignment="Left" Height="28" Margin="105,165,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.669,1.638" Width="293"/>
+        <Label Content="No Artist" x:Name="CurrentArtist" HorizontalAlignment="Left" Height="33" Margin="60,120,0,0" VerticalAlignment="Top" Width="293"/>
+        <Label Content="No Song" x:Name="CurrentSong" HorizontalAlignment="Left" Height="28" Margin="60,153,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.669,1.638" Width="293"/>
         <Image x:Name="Cover" HorizontalAlignment="Left" Height="300" Margin="25,215,0,0" VerticalAlignment="Top" Width="300"/>
-        <Label Content="Artist :" HorizontalAlignment="Left" Margin="52,132,0,0" VerticalAlignment="Top"/>
-        <Label Content="Song :" HorizontalAlignment="Left" Margin="52,165,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.349,0.48"/>
-        <DataGrid Name="dgGoogleAccount"   HorizontalAlignment="Left" Margin="361,154,0,0" VerticalAlignment="Top" Height="83" Width="233">
-            <DataGrid.DataContext>
-                <GoogleAccounts:GoogleAccountDto/>
-            </DataGrid.DataContext>
+        <Label Content="Artist :" HorizontalAlignment="Left" Margin="7,120,0,0" VerticalAlignment="Top"/>
+        <Label Content="Song :" HorizontalAlignment="Left" Margin="7,153,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.349,0.48"/>
+        <DataGrid Name="dgGoogleAccount" AutoGenerateColumns="False"   HorizontalAlignment="Left" Margin="375,153,0,0" VerticalAlignment="Top" Height="83" Width="233" HorizontalGridLinesBrush="#FF0E0D0D" Background="#FFF9F9F9">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}"  Width="233" />
+
+            </DataGrid.Columns>
 
         </DataGrid>
 
