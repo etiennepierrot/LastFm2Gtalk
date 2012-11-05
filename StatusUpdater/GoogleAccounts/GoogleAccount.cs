@@ -119,7 +119,10 @@ namespace StatusUpdater.GoogleAccounts
                 Username = Login,
                 Password = Crypto.Decrypt(Password, Crypto.Password),
                 KeepAlive = true,
-                KeepAliveInterval = 120
+                KeepAliveInterval = 120,
+                UseSSL = true,
+                Port = 5223
+               
             };
 
             InitEvent();
