@@ -123,6 +123,11 @@ namespace WpfGStatusUpdater
             Debug.Assert(arg != null);
             var accounts = _facade.GetGoogleAccountToUpdate().ToArray();
 
+            foreach (var googleAccount in accounts)
+            {
+                googleAccount.Connect();
+            }
+
             while (true)
             {
 
@@ -132,7 +137,7 @@ namespace WpfGStatusUpdater
                     break;
                 }
 
-                if (_facade.Update(arg.UserLastFm, accounts))
+                if (_facade.Update(arg.UserLastFm, accounts.Where(x => x.IsAccountValid)))
                 {
                     _worker.ReportProgress(0);
                 }
