@@ -16,6 +16,8 @@ namespace TestStatusUpdater
             Assert.IsTrue(accounts.Any());
 
         }
+
+
         [TestInitialize]
         public void Initialize()
         {

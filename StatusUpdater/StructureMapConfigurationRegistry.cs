@@ -12,7 +12,7 @@ namespace StatusUpdater
         // register RavenDB document store
         ForSingletonOf<IDocumentStore>().Use(() =>
         {
-            var documentStore = new EmbeddableDocumentStore { DataDirectory = "Data2", UseEmbeddedHttpServer = false };
+            var documentStore = new EmbeddableDocumentStore { DataDirectory = "Data2", UseEmbeddedHttpServer = true };
 
             documentStore.Initialize();
 

@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using StatusUpdater.RavenRepositories;
+using StatusUpdater.Tools;
 using agsXMPP;
 using agsXMPP.Xml.Dom;
 using agsXMPP.protocol.client;
@@ -12,12 +13,12 @@ namespace StatusUpdater.GoogleAccounts
         public string Email { get; set; }
     }
 
-    public class GoogleAccount:IEntity
+    public class GoogleAccount : IEntity
     {
         public string Email { get { return string.Format("{0}@{1}", Login, Domain); } }
         public string Login { get; private set; }
         public string Domain { get; private set; }
-        public string Password { get;  set; }
+        public string Password { get; set; }
         public bool IsConnected { get; private set; }
         public bool IsAccountValid { get; private set; }
 
@@ -28,18 +29,17 @@ namespace StatusUpdater.GoogleAccounts
 
         public string Id { get; set; }
 
-        public GoogleAccount(string email, string password)
+        public GoogleAccount(string email)
         {
             string[] strings = email.Split('@');
             Login = strings[0];
             Domain = strings[1];
-            Password = password;
-            Connect();
         }
 
         public void CloseConnection()
         {
-            _xmppClientConnection.Close();
+            if (_xmppClientConnection != null)
+                _xmppClientConnection.Close();
         }
 
         public void SetStatus(string status)
@@ -106,17 +106,18 @@ namespace StatusUpdater.GoogleAccounts
         private void XmppOnLogin(object sender)
         {
             Wait = false;
+            IsConnected = true;
         }
         #endregion
 
-        private void Connect()
+        public bool Connect()
         {
             _xmppClientConnection = new XmppClientConnection
             {
                 Server = Domain,
                 ConnectServer = "talk.google.com",
                 Username = Login,
-                Password = Password,
+                Password = Crypto.Decrypt(Password, Crypto.Password),
                 KeepAlive = true,
                 KeepAliveInterval = 120
             };
@@ -127,8 +128,9 @@ namespace StatusUpdater.GoogleAccounts
 
             Waiting();
 
-            IsConnected = true;
             IsAccountValid = _xmppClientConnection.Authenticated;
+            return IsAccountValid;
+
         }
 
         private void InitEvent()
@@ -146,13 +148,16 @@ namespace StatusUpdater.GoogleAccounts
         private void Waiting()
         {
             Wait = true;
-            int i = 0;
+            var i = 0;
             do
             {
-                Console.Write(".");
                 i++;
                 if (i == 10)
+                {
                     Wait = false;
+                    IsConnected = false;
+                }
+
                 Thread.Sleep(500);
             } while (Wait);
         }

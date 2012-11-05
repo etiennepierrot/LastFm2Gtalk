@@ -56,6 +56,7 @@ namespace StatusUpdater
 
         public void RegisterAccount(string email, string password)
         {
+            
             _googleAccountService.RegisterAccount(email, password);
         }
 
