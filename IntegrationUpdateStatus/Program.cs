@@ -11,8 +11,7 @@ namespace IntegrationUpdateStatus
     {
         static void Main(string[] args)
         {
-            var client = new GoogleAccount("etienne.pierrot", "fakepass");
-          
+            
             while (true)
             {
                 //new Facade().Update(new List<GoogleAccount>() { client }, "Etienne_Fab4");
