@@ -114,6 +114,7 @@
   <ItemGroup>
     <Compile Include="TestLastFmClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestXMPP.cs" />
     <Compile Include="GoogleAccountTest.cs" />
     <Compile Include="CryptoTest.cs" />
   </ItemGroup>
