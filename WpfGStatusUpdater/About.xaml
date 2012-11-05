@@ -1,0 +1,9 @@
+﻿<Window x:Class="WpfGStatusUpdater.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="About" Height="300" Width="300">
+    <Grid>
+        <Label Content="Lastfm To Gtalk v0.1" HorizontalAlignment="Center" Margin="60,117,70,119" VerticalAlignment="Center" Height="33" Width="162" FontSize="16"/>
+
+    </Grid>
+</Window>

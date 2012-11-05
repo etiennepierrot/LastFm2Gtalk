@@ -174,5 +174,15 @@ namespace WpfGStatusUpdater
             dgGoogleAccount.ItemsSource = _facade.GetGoogleAccountToUpdate().Select(x => new GoogleAccountDto { Email = x.Email });
         }
 
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+        {
+            new About().Show();
+        }
+
     }
 }
